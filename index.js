@@ -1,5 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom"
+import 'normalize.css'
 
 class HelloMessage extends React.Component {
   render() {

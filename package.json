@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/dqunbp/urban-analytics-project-demo#readme",
   "dependencies": {
+    "normalize.css": "^8.0.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2"
   },
