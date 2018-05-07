@@ -2,25 +2,11 @@ import React from "react"
 import ReactDOM from "react-dom"
 import 'normalize.css'
 import 'leaflet/dist/leaflet.css'
+import 'c3/c3.css'
 
 import './styles/style.css'
 
-import Map from './components/Map'
-
-class App extends React.Component {
-  render() {
-    return (
-        <div className="app">
-            <div className="sibebar">
-                Sidebar
-            </div>
-            <div className="map">
-                <Map />
-            </div>
-        </div>
-    )
-  }
-}
+import UrbanAnalyticsApp from './components/UrbanAnalyticsApp'
 
 var mountNode = document.getElementById("app")
-ReactDOM.render(<App />, mountNode)
+ReactDOM.render(<UrbanAnalyticsApp />, mountNode)
