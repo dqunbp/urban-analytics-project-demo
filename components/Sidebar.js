@@ -3,6 +3,7 @@ import React from 'react'
 import PieChart from './PieChart'
 import Legend from './Legend'
 import Summary from './Summary'
+import Actions from './Actions'
 
 export class Sidebar extends React.Component {
     constructor(props) {
@@ -25,7 +26,7 @@ export class Sidebar extends React.Component {
                 <PieChart ref={ref} columns={columns} />
                 <Legend chartRef={ref} />
                 <Summary />
-                {/* <Actions /> */}
+                <Actions />
             </div>
         )
     }
