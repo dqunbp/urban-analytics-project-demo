@@ -1,5 +1,6 @@
 import React from 'react'
 import PieChart from './PieChart'
+import Legend from './Legend'
 
 export class Sidebar extends React.Component {
     constructor(props) {
@@ -15,10 +16,12 @@ export class Sidebar extends React.Component {
             ['data3', 200]
         ]
 
+        const ref = React.createRef()
+        console.log(ref)
         return (
             <div>
-                <PieChart columns={columns} />
-                {/* <Legend /> */}
+                <PieChart ref={ref} columns={columns} />
+                <Legend chartRef={ref} />
                 {/* <Summary /> */}
                 {/* <Actions /> */}
             </div>
