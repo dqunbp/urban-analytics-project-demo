@@ -1,0 +1,30 @@
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.6rem;
+}
+
+.app {
+    display: flex;
+    flex: 1;
+    min-height: 100vh;
+    height: 100%;
+}
+
+.sibebar {
+    flex: 3;
+    border-right: 1px solid black;
+    border-image: linear-gradient(to top, rgba(0, 0, 0, 0) 3%, #868686, rgba(0, 0, 0, 0) 97%) 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.map {
+    flex: 12;
+    padding: 2rem;
+}
