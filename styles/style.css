@@ -4,6 +4,7 @@ html {
 
 body {
     font-size: 1.6rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .app {
@@ -56,3 +57,30 @@ body {
 .legend-item__name {
     display: inline-block;
 }
+
+.list {
+    margin-top: 4.2rem;
+    background-color: lightcyan;
+}
+
+.list__header {
+    text-align: center;
+    font-size: 2.4rem;
+    margin-bottom: 3rem;
+}
+
+.list-item {
+    width: 19rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    
+}
+
+.list-item__count {
+    display: inline-block;
+}
+
+.list-item__name {
+    display: inline-block;
+}
+
