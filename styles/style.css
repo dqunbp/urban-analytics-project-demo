@@ -1,4 +1,3 @@
-
 html {
     font-size: 62.5%;
 }
@@ -26,5 +25,11 @@ body {
 
 .map {
     flex: 12;
-    padding: 2rem;
+    padding: 5rem 2rem;
+}
+
+#map {
+    height: 100%;
+    width: auto;
+    border-radius: 10px;
 }
