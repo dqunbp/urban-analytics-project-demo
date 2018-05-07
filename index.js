@@ -3,6 +3,8 @@ import ReactDOM from "react-dom"
 import 'normalize.css'
 import 'leaflet/dist/leaflet.css'
 
+import './styles/style.css'
+
 import Map from './components/Map'
 
 class App extends React.Component {

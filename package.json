@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "parcel index.html",
+    "build": "cross-env NODE_ENV=production parcel build index.html -d build --no-minify --public-url ./",
+    "start": "cross-env NODE_ENV=development parcel index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -27,6 +28,7 @@
   "devDependencies": {
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "cross-env": "^5.1.4",
     "parcel-bundler": "^1.8.1"
   }
 }
