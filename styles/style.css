@@ -40,3 +40,19 @@ body {
     align-items: center;
     width: 19rem;
 }
+
+.legend-item {
+    width: 19rem;
+    background-color: lightgray;
+    text-align: center;
+    margin-bottom: 2rem;
+    
+}
+
+.legend-item__count {
+    display: inline-block;
+}
+
+.legend-item__name {
+    display: inline-block;
+}

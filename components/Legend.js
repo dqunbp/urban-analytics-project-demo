@@ -1,9 +1,12 @@
 import React from 'react'
 
+import LegendItem from './LegendItem'
+
 export const Legend = (props) => {
     return (
         <div className="legend">
-            Legend
+            <LegendItem name={"name-1"} count={10} />
+            <LegendItem name={"name-2"} count={8} />
         </div>
     )
 }
