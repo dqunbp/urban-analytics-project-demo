@@ -2,14 +2,17 @@ import React from 'react'
 import C3Chart from 'react-c3js'
 
 export const PieChart = ({ columns, colors, onClick, onMouseOver, onMouseOut }) => (
-    <C3Chart data={{
-        columns: columns,
-        colors: colors || {},
-        type: 'pie',
-        onclick: onClick,
-        onmouseover: onMouseOver,
-        onmouseout: onMouseOut,
-    }} />
+    <C3Chart
+        data={{
+            columns: columns,
+            colors: colors || {},
+            type: 'pie',
+            onclick: onClick,
+            onmouseover: onMouseOver,
+            onmouseout: onMouseOut,
+        }}
+        legend={{ show: false }}
+    />
 )
 
 export default PieChart
