@@ -1,6 +1,9 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import 'normalize.css'
+import 'leaflet/dist/leaflet.css'
+
+import Map from './components/Map'
 
 class App extends React.Component {
   render() {
@@ -10,7 +13,7 @@ class App extends React.Component {
                 Sidebar
             </div>
             <div className="map">
-                Map
+                <Map />
             </div>
         </div>
     )
