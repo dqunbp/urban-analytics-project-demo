@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=production parcel build index.html -d build --no-minify --public-url ./",
-    "start": "cross-env NODE_ENV=development parcel index.html",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "cross-env NODE_ENV=production parcel build index.html -d public --no-minify --public-url ./",
+    "start": "cross-env NODE_ENV=development parcel public/index.html",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "node server/index.js"
   },
   "repository": {
     "type": "git",
