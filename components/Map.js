@@ -1,5 +1,6 @@
 import React from 'react'
 import L from 'leaflet'
+import 'leaflet-draw'
 
 let google = L.tileLayer('http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}&s=Ga', { id: 1 }),
     osm = L.tileLayer('http://a.tile.openstreetmap.org/{z}/{x}/{y}.png', { id: 2 })
@@ -19,14 +20,35 @@ config.baseLayers = {
     "OSM": osm
 }
 
+config.featureGroup = new L.FeatureGroup()
+config.drawControl = new L.Control.Draw({
+    draw: {
+        polygon: false,
+        rectangle: {
+            icon: new L.DivIcon({
+                iconSize: new L.Point(7, 7),
+                className: 'point'
+            })
+        },
+        polyline: false,
+        circle: false,
+        marker: false,
+        circlemarker: false,
+    },
+    edit: false
+})
+
 export class Map extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             map: null,
             layersControl: null,
+            featureGroup: null,
+            polygonLayer: null,
         }
-        this._mapNode = null
+        this._mapNode = React.createRef()
+        this.initDrawEvents = this.initDrawEvents.bind(this)
     }
 
     componentDidMount() {
@@ -34,54 +56,63 @@ export class Map extends React.Component {
         // we could make an AJAX request for the GeoJSON data here if it wasn't stored locally
         // this.getData();
         // create the Leaflet map object
-        if (!this.state.map) this.init(this._mapNode);
+        if (!this.state.map) this.init(this._mapNode.current);
     }
 
     componentDidUpdate(prevProps, prevState) {
-        // code to run when the component receives new props or state
-        // check to see if geojson is stored, map is created, and geojson overlay needs to be added
-        // if (this.state.geojson && this.state.map && !this.state.geojsonLayer) {
-        //     // add the geojson overlay
-        //     this.addGeoJSONLayer(this.state.geojson);
-        // }
-
-        // // check to see if the subway lines filter has changed
-        // if (this.state.subwayLinesFilter !== prevState.subwayLinesFilter) {
-        //     // filter / re-render the geojson overlay
-        //     this.filterGeoJSONLayer();
-        // }
+        
     }
 
     componentWillUnmount() {
         // code to run just before unmounting the component
         // this destroys the Leaflet map object & related event listeners
-        this.state.map.remove();
+        this.state.map.current.remove();
     }
 
     getData() {
-        // could also be an AJAX request that results in setting state with the geojson data
-        // for simplicity sake we are just importing the geojson data using webpack's json loader
-        // this.setState({
-        //     numEntrances: geojson.features.length,
-        //     geojson
-        // });
+        
+    }
+
+    initDrawEvents(map, featureGroup) {
+        map.on(L.Draw.Event.CREATED, (event) => {
+            let polygonLayer = event.layer
+
+            L.Util.setOptions(polygonLayer, { interactive: true, fill: false })
+
+            let { polygonLayer: currentLayer } = this.state
+            console.log(this.state)
+            if (currentLayer) {
+                featureGroup.removeLayer(currentLayer)
+                this.setState(() => ({ polygonLayer: null }))
+            }
+
+            featureGroup.addLayer(polygonLayer)
+            this.setState(() => ({ polygonLayer }))
+        })
     }
 
     init(id) {
         if (this.state.map) return
         // this function creates the Leaflet map object and is called after the Map component mounts
         let map = L.map(id, config.params)
-
         // a TileLayer is used as the "basemap"
-        const layersControl = L.control.layers(config.baseLayers, undefined, { position: 'topright', collapsed: false }).addTo(map)
+        let layersControl = L.control.layers(config.baseLayers, undefined, { position: 'topright', collapsed: false }).addTo(map)
+        let featureGroup = config.featureGroup
+        // add DrawControl to the map
+        map.addControl(config.drawControl)
+        // add featureGroup to the map
+        featureGroup.addTo(map)
 
-        // set our state to include the tile layer
-        this.setState({ map, layersControl })
+        // init draw create event
+        this.initDrawEvents(map, featureGroup)
+
+        // set our state
+        this.setState({ map, layersControl, featureGroup })
     }
 
     render() {
         return (
-            <div ref={(node) => this._mapNode = node} id="map" />
+            <div ref={this._mapNode} id="map" />
         )
     }
 }
