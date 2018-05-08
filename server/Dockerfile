@@ -1,6 +1,5 @@
 FROM node:carbon
 
-ADD ../package.json /server/package.json
 ADD . /server
 WORKDIR /server
 
