@@ -8,5 +8,5 @@ Commands list
 > 
 > ```sh
 > docker-compose exec mongo bash
-> mongoimport -d <db_name> -c <collection_name> --file /geojson/<file_name>
+> mongoimport -d <db_name> -c <collection_name> --file /geojson/<file_name> --jsonArray 
 > ```

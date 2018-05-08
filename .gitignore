@@ -1,7 +1,13 @@
+#Data
+geojson/
+jq
+
+#OS
+.DS_Store
+
 # Parcel
 .cache
 dist/
-.DS_Store
 
 # Logs
 logs
