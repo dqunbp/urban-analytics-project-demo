@@ -3,10 +3,10 @@ services:
 
   frontend:
     build: server/.
-  depends_on:
-    - mongo
-  links:
-    - mongo
+    depends_on:
+      - mongo
+    links:
+      - mongo
 
   mongo:
     image: mongo
