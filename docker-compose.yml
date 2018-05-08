@@ -1,0 +1,13 @@
+version: "3"
+services:
+
+  backend:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./geojson:/geojson
+      - mongo_data:/data
+  
+volumes:
+  mongo_data: {}
