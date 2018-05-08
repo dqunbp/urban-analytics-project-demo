@@ -26,7 +26,7 @@ export class Map extends React.Component {
             map: null,
             layersControl: null,
         }
-        this._mapNode = null
+        this._mapNode = React.createRef()
     }
 
     componentDidMount() {
@@ -34,7 +34,7 @@ export class Map extends React.Component {
         // we could make an AJAX request for the GeoJSON data here if it wasn't stored locally
         // this.getData();
         // create the Leaflet map object
-        if (!this.state.map) this.init(this._mapNode);
+        if (!this.state.map) this.init(this._mapNode.current);
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -55,7 +55,7 @@ export class Map extends React.Component {
     componentWillUnmount() {
         // code to run just before unmounting the component
         // this destroys the Leaflet map object & related event listeners
-        this.state.map.remove();
+        this.state.map.current.remove();
     }
 
     getData() {
@@ -81,7 +81,7 @@ export class Map extends React.Component {
 
     render() {
         return (
-            <div ref={(node) => this._mapNode = node} id="map" />
+            <div ref={this._mapNode} id="map" />
         )
     }
 }
