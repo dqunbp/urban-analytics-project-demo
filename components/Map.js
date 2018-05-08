@@ -1,5 +1,6 @@
 import React from 'react'
 import L from 'leaflet'
+import 'leaflet-draw'
 
 let google = L.tileLayer('http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}&s=Ga', { id: 1 }),
     osm = L.tileLayer('http://a.tile.openstreetmap.org/{z}/{x}/{y}.png', { id: 2 })
@@ -19,12 +20,30 @@ config.baseLayers = {
     "OSM": osm
 }
 
+config.drawControl = new L.Control.Draw({
+    draw: {
+        polygon: false,
+        rectangle: {
+            icon: new L.DivIcon({
+                iconSize: new L.Point(7, 7),
+                className: 'point'
+            })
+        },
+        polyline: false,
+        circle: false,
+        marker: false,
+        circlemarker: false,
+    },
+    edit: false
+})
+
 export class Map extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             map: null,
             layersControl: null,
+            polygon: null,
         }
         this._mapNode = React.createRef()
     }
@@ -74,6 +93,9 @@ export class Map extends React.Component {
 
         // a TileLayer is used as the "basemap"
         const layersControl = L.control.layers(config.baseLayers, undefined, { position: 'topright', collapsed: false }).addTo(map)
+        
+        // add DrawControl to the map
+        map.addControl(config.drawControl)
 
         // set our state to include the tile layer
         this.setState({ map, layersControl })
