@@ -1,9 +1,11 @@
 import React from 'react'
-
+import { connect } from 'react-redux'
 import PieChart from './PieChart'
 import Legend from './Legend'
 import Summary from './Summary'
 import Actions from './Actions'
+
+import statisticsSelector from '../selectors/populationStats'
 
 export class Sidebar extends React.Component {
     constructor(props) {
@@ -32,4 +34,6 @@ export class Sidebar extends React.Component {
     }
 }
 
-export default Sidebar
+const mapStateToProps = (state) => statisticsSelector(state)
+
+export default connect(mapStateToProps)(Sidebar)

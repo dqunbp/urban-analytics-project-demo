@@ -4,6 +4,8 @@ import React from 'react'
 import Map from './Map'
 import Sidebar from './Sidebar'
 
+import dataSample from '../sample'
+
 export class UrbanAnalyticsApp extends React.Component {
     render() {
         return (
