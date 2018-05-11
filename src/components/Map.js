@@ -1,6 +1,9 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import L from 'leaflet'
 import 'leaflet-draw'
+
+import { loadAreaData } from '../actions'
 
 let google = L.tileLayer('http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}&s=Ga', { id: 1 }),
     osm = L.tileLayer('http://a.tile.openstreetmap.org/{z}/{x}/{y}.png', { id: 2 })
@@ -39,17 +42,15 @@ config.drawControl = new L.Control.Draw({
 })
 
 export class Map extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            map: null,
-            layersControl: null,
-            featureGroup: null,
-            polygonLayer: null,
-        }
-        this._mapNode = React.createRef()
-        this.initDrawEvents = this.initDrawEvents.bind(this)
+
+    state = {
+        map: null,
+        layersControl: null,
+        featureGroup: null,
+        polygonLayer: null,
     }
+
+    _mapNode = React.createRef()
 
     componentDidMount() {
         // code to run just after the component "mounts" / DOM elements are created
@@ -60,7 +61,7 @@ export class Map extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        
+
     }
 
     componentWillUnmount() {
@@ -69,25 +70,32 @@ export class Map extends React.Component {
         this.state.map.current.remove();
     }
 
-    getData() {
-        
+    getData = (layer) => {
+        let withInPolygon = layer.toGeoJSON()
+        let { geometry: { coordinates } } = withInPolygon
+        this.props.loadAreaData(coordinates)
     }
 
-    initDrawEvents(map, featureGroup) {
+    initDrawEvents = (map, featureGroup) => {
         map.on(L.Draw.Event.CREATED, (event) => {
             let polygonLayer = event.layer
-
+            // Add area polygon layer to the map
             L.Util.setOptions(polygonLayer, { interactive: true, fill: false })
-
             let { polygonLayer: currentLayer } = this.state
             console.log(this.state)
             if (currentLayer) {
                 featureGroup.removeLayer(currentLayer)
                 this.setState(() => ({ polygonLayer: null }))
             }
-
             featureGroup.addLayer(polygonLayer)
             this.setState(() => ({ polygonLayer }))
+
+            // fetch within data
+            try {
+                this.getData(polygonLayer)
+            } catch (error) {
+                console.log(error)
+            }
         })
     }
 
@@ -117,4 +125,4 @@ export class Map extends React.Component {
     }
 }
 
-export default Map
+export default connect(undefined, { loadAreaData })(Map)
