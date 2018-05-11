@@ -2,7 +2,15 @@ version: "3"
 services:
 
   frontend:
-    build: server/.
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./server:/usr/src/app
+      - ./public:/usr/src/app/public
+      - /usr/src/app/node_modules
     depends_on:
       - mongo
     links:

@@ -3,8 +3,8 @@
 const path = require('path');
 const express = require('express');
 const app = express();
-const publicPath = path.join(__dirname, '..', 'public');
-const port = process.env.PORT || 3000;
+const publicPath = path.join(__dirname, 'public');
+const port = process.env.PORT || 8080;
 const bodyParser = require('body-parser');
 
 const db = require('./database').db;
@@ -13,9 +13,9 @@ const functions = require('./functions');
 
 var router = express.Router();
 
-// app.get('/index', (req, res) => {
-//     res.sendFile(path.join(publicPath, 'index.html'));
-// });
+app.get('/index', (req, res) => {
+    res.sendFile(path.join(publicPath, 'index.html'));
+});
 
 router.get('/', function (req, res) {
     res.json({ message: 'Welcome to our api!' });
@@ -50,7 +50,7 @@ router.post('/select', function (req, res) {
     }
 });
 
-// app.use(express.static(publicPath));
+app.use(express.static(publicPath));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/api', router);
