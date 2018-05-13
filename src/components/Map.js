@@ -1,6 +1,10 @@
 import React from 'react'
-import L from 'leaflet'
-import 'leaflet-draw'
+import { connect } from 'react-redux'
+
+import featuresSelector from '../selectors/features'
+import { loadAreaData } from '../actions'
+
+// Leaflet & osmb libs Moved to CDN
 
 let google = L.tileLayer('http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}&s=Ga', { id: 1 }),
     osm = L.tileLayer('http://a.tile.openstreetmap.org/{z}/{x}/{y}.png', { id: 2 })
@@ -23,10 +27,10 @@ config.baseLayers = {
 config.featureGroup = new L.FeatureGroup()
 config.drawControl = new L.Control.Draw({
     draw: {
-        polygon: false,
-        rectangle: {
+        rectangle: false,
+        polygon: {
             icon: new L.DivIcon({
-                iconSize: new L.Point(7, 7),
+                iconSize: new L.Point(17, 17),
                 className: 'point'
             })
         },
@@ -39,28 +43,31 @@ config.drawControl = new L.Control.Draw({
 })
 
 export class Map extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            map: null,
-            layersControl: null,
-            featureGroup: null,
-            polygonLayer: null,
-        }
-        this._mapNode = React.createRef()
-        this.initDrawEvents = this.initDrawEvents.bind(this)
+
+    state = {
+        map: null,
+        layersControl: null,
+        featureGroup: null,
+        polygonLayer: null,
     }
+
+    _mapNode = React.createRef()
+    _osmb = React.createRef()
 
     componentDidMount() {
         // code to run just after the component "mounts" / DOM elements are created
-        // we could make an AJAX request for the GeoJSON data here if it wasn't stored locally
-        // this.getData();
         // create the Leaflet map object
         if (!this.state.map) this.init(this._mapNode.current);
     }
 
     componentDidUpdate(prevProps, prevState) {
-        
+        console.log('current', this.props)
+        console.log('next', prevProps)
+        if(this.props.features.length > 0) {
+            this._osmb.set(
+                this.featuresListToCollection(this.props.features)
+            )
+        }
     }
 
     componentWillUnmount() {
@@ -69,25 +76,39 @@ export class Map extends React.Component {
         this.state.map.current.remove();
     }
 
-    getData() {
-        
+    getData = (layer) => {
+        let withInPolygon = layer.toGeoJSON()
+        let { geometry: { coordinates } } = withInPolygon
+        this.props.loadAreaData(coordinates)
     }
 
-    initDrawEvents(map, featureGroup) {
+    featuresListToCollection = (list) => ({
+        "type": "FeatureCollection",
+        "features": list
+    })
+
+    initDrawEvents = (map, featureGroup) => {
         map.on(L.Draw.Event.CREATED, (event) => {
             let polygonLayer = event.layer
+            console.log(polygonLayer.toGeoJSON().geometry.coordinates)
 
+            // Add area polygon layer to the map
             L.Util.setOptions(polygonLayer, { interactive: true, fill: false })
-
             let { polygonLayer: currentLayer } = this.state
             console.log(this.state)
             if (currentLayer) {
                 featureGroup.removeLayer(currentLayer)
                 this.setState(() => ({ polygonLayer: null }))
             }
-
             featureGroup.addLayer(polygonLayer)
             this.setState(() => ({ polygonLayer }))
+
+            // fetch within data
+            try {
+                this.getData(polygonLayer)
+            } catch (error) {
+                console.log(error)
+            }
         })
     }
 
@@ -95,11 +116,18 @@ export class Map extends React.Component {
         if (this.state.map) return
         // this function creates the Leaflet map object and is called after the Map component mounts
         let map = L.map(id, config.params)
+
+        // setup osmb
+        this._osmb = new OSMBuildings(map)
+
         // a TileLayer is used as the "basemap"
+        
         let layersControl = L.control.layers(config.baseLayers, undefined, { position: 'topright', collapsed: false }).addTo(map)
         let featureGroup = config.featureGroup
+        
         // add DrawControl to the map
         map.addControl(config.drawControl)
+        
         // add featureGroup to the map
         featureGroup.addTo(map)
 
@@ -117,4 +145,8 @@ export class Map extends React.Component {
     }
 }
 
-export default Map
+const mapStateToProps = (state) => featuresSelector(state)
+export default connect(
+    mapStateToProps,
+    { loadAreaData }
+)(Map)

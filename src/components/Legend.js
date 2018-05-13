@@ -3,6 +3,7 @@ import React from 'react'
 import LegendItem from './LegendItem'
 
 export const Legend = (props) => {
+    console.log(props.chartRef)
     return (
         <div className="legend">
             <LegendItem name={"name-1"} count={10} />

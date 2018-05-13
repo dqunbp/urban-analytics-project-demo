@@ -2,16 +2,17 @@ import React from 'react'
 import C3Chart from 'react-c3js'
 
 export const PieChart = React.forwardRef(
-    ({ columns, colors, onClick, onMouseOver, onMouseOut }, ref) => (
+    // ({ columns, colors, onClick, onMouseOver, onMouseOut }, ref) => (
+    (props, ref) => (
         <C3Chart
             ref={ref}
             data={{
-                columns: columns,
-                colors: colors || {},
+                columns: props.columns,
+                colors: props.colors || {},
                 type: 'pie',
-                onclick: onClick,
-                onmouseover: onMouseOver,
-                onmouseout: onMouseOut,
+                onclick: props.onClick,
+                onmouseover: props.onMouseOver,
+                onmouseout: props.onMouseOut,
             }}
             legend={{ show: false }}
         />

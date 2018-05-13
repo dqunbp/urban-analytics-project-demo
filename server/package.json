@@ -4,7 +4,7 @@
   "description": "buildings height detector",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Tigran Grigoryan",
@@ -12,6 +12,7 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
-    "mongoose": "^5.0.16"
+    "mongoose": "^5.0.16",
+    "cors": "2.8.4"
   }
 }
