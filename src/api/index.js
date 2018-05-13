@@ -2,8 +2,8 @@ import axios from '../api/client'
 
 export const api = {
 
-    fetchArea() {
+    fetchArea(coordinates) {
         const url = `/select`
-        return axios.post(url)
+        return axios.post(url, { coordinates })
     }
 }

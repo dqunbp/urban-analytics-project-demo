@@ -6,6 +6,7 @@ const app = express();
 const publicPath = path.join(__dirname, 'public');
 const port = process.env.PORT || 8080;
 const bodyParser = require('body-parser');
+var cors = require('cors');
 
 const db = require('./database').db;
 const GeoModels = require('./models/GeoJson');
@@ -32,10 +33,11 @@ router.get('/all', (req, res) => {
 });
 
 router.post('/select', function (req, res) {
+    console.log(req.method + ' request: ' + req.url);
     try {
-        let polygon = functions.getPolygonFromCoords(req.body.coords);
-        console.log('poly', polygon);
-        console.log('from req', req.body.coords);
+        let polygon = functions.getPolygonFromCoords(req.body.coordinates);
+        // console.log('poly', polygon);
+        // console.log('coordinates from req', req.body.coordinates);
 
         GeoModels.within(
             polygon,
@@ -50,6 +52,7 @@ router.post('/select', function (req, res) {
     }
 });
 
+app.use(cors());
 app.use(express.static(publicPath));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

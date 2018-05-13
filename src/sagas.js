@@ -4,7 +4,7 @@ import { api } from './api'
 import { area } from './actions'
 import * as actions from './actions'
 
-function* loadArea(coordinates) {
+function* loadArea({coordinates}) {
     try {
         yield put(area.request(coordinates))
         const response = yield call(api.fetchArea, coordinates)

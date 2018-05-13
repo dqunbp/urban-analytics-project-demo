@@ -15,17 +15,10 @@ export class Sidebar extends React.Component {
 
     render() {
 
-        let columns = [
-            ['data1', 100],
-            ['data2', 300],
-            ['data3', 200]
-        ]
-
         const ref = React.createRef()
-        console.log(ref)
         return (
             <div>
-                <PieChart ref={ref} columns={columns} />
+                <PieChart ref={ref} columns={this.props.columns} />
                 <Legend chartRef={ref} />
                 <Summary />
                 <Actions />
