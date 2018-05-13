@@ -12,14 +12,14 @@ export class Sidebar extends React.Component {
     render() {
 
         const ref = React.createRef()
-        const { isAreaSelected, columns, summary } = this.props
+        const { isAreaSelected, columns, summary, legend } = this.props
         return (
             isAreaSelected ? (
                 <div className="message">Select area of interest</div>
             ) : (
                 <div>
                     <PieChart ref={ref} columns={columns} />
-                    <Legend chartRef={ref} />
+                    <Legend data={legend} chartRef={ref} />
                     <Summary />
                     <Actions />
                 </div>

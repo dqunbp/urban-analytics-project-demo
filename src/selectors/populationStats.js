@@ -21,6 +21,7 @@ export default (state) => {
     return {
         columns: toColumns(agregated.chart),
         summary: agregated.summary,
+        legend: agregated.chart,
         isAreaSelected: !features.length > 0
     }
 }
