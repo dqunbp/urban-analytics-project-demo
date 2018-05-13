@@ -20,7 +20,8 @@ export default (state) => {
     )
     return {
         columns: toColumns(agregated.chart),
-        summary: agregated.summary
+        summary: agregated.summary,
+        isAreaSelected: !features.length > 0
     }
 }
 

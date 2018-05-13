@@ -93,3 +93,8 @@ body {
     border: 1px black solid;
     border-radius: 50%;
 }
+
+.message {
+    width: 9rem;
+    text-align: center;
+}

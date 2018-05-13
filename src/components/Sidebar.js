@@ -8,21 +8,22 @@ import Actions from './Actions'
 import statisticsSelector from '../selectors/populationStats'
 
 export class Sidebar extends React.Component {
-    constructor(props) {
-        super(props)
-
-    }
 
     render() {
 
         const ref = React.createRef()
+        const { isAreaSelected, columns, summary } = this.props
         return (
-            <div>
-                <PieChart ref={ref} columns={this.props.columns} />
-                <Legend chartRef={ref} />
-                <Summary />
-                <Actions />
-            </div>
+            isAreaSelected ? (
+                <div className="message">Select area of interest</div>
+            ) : (
+                <div>
+                    <PieChart ref={ref} columns={columns} />
+                    <Legend chartRef={ref} />
+                    <Summary />
+                    <Actions />
+                </div>
+            )
         )
     }
 }
