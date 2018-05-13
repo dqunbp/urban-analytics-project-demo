@@ -8,7 +8,7 @@ export default (state) => {
         }
         res.chart[type] += 1
         res.summary.buildings += 1
-        res.summary.citizens += population
+        res.summary.citizens +=  ~~parseFloat(population)
         return res
     }, {
             chart: {},
@@ -20,7 +20,9 @@ export default (state) => {
     )
     return {
         columns: toColumns(agregated.chart),
-        summary: agregated.summary
+        summary: agregated.summary,
+        legend: agregated.chart,
+        isAreaSelected: !features.length > 0
     }
 }
 
