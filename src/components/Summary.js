@@ -13,6 +13,8 @@ export const Summary = ({ data }) => {
             <div className="list__header">Summary</div>
             <div>
                 {summaryItems}
+                {/* <SummaryItem key={'name1'} name={'name'} count={83} />
+                <SummaryItem key={'name2'} name={'frames'} count={34} /> */}
             </div>
         </div>
     )

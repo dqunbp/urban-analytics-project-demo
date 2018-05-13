@@ -74,29 +74,35 @@ body {
 
 /* Summary */
 .list {
-    margin-top: 4.2rem;
-    background-color: lightcyan;
+    margin-top: 1.8rem;
 }
 
 .list__header {
     text-align: center;
     font-size: 2.4rem;
-    margin-bottom: 3rem;
+    margin-bottom: 2.1rem;
 }
 
 .list-item {
     width: 19rem;
     text-align: center;
     margin-bottom: 2rem;
+    border-bottom: 1px solid black;
+    border-image: linear-gradient(to right, rgba(0, 0, 0, 0) 3%, #868686, rgba(0, 0, 0, 0) 97%) 1;
     
 }
 
 .list-item__count {
     display: inline-block;
+    font-size: 1.4rem;
+    line-height: 1.6rem;
+    padding-right: 1rem;
 }
 
 .list-item__name {
     display: inline-block;
+    font-size: 1.4rem;
+    line-height: 1.6rem;
 }
 
 .actions {
@@ -112,4 +118,10 @@ body {
 .message {
     width: 9rem;
     text-align: center;
+}
+
+.piechart {
+    max-height: 19rem !important;
+    position: relative;
+    margin-bottom: 5rem;
 }
