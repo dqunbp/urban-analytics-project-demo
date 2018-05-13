@@ -13,8 +13,6 @@ export const Legend = ({ data }) => {
     }, [])
     return (
         <div className="legend">
-            {/* <LegendItem name={"name-1"} count={10} />
-            <LegendItem name={"name-2"} count={8} /> */}
             {legendItems}
         </div>
     )

@@ -20,7 +20,7 @@ export class Sidebar extends React.Component {
                 <div>
                     <PieChart ref={ref} columns={columns} />
                     <Legend data={legend} chartRef={ref} />
-                    <Summary />
+                    <Summary data={summary} />
                     <Actions />
                 </div>
             )

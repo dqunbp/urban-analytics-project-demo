@@ -8,7 +8,7 @@ export default (state) => {
         }
         res.chart[type] += 1
         res.summary.buildings += 1
-        res.summary.citizens += population
+        res.summary.citizens +=  ~~parseFloat(population)
         return res
     }, {
             chart: {},
