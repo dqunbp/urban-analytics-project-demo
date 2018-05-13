@@ -12,7 +12,8 @@ export class Sidebar extends React.Component {
         const ref = React.createRef()
         const { isAreaSelected, columns, summary, legend } = this.props
         return (
-            isAreaSelected ? (
+            // isAreaSelected ? (
+            false ? (
                 <div className="message">Select area of interest</div>
             ) : (
                     <div>
