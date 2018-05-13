@@ -3,8 +3,8 @@ import C3Chart from 'react-c3js'
 
 export const PieChart = React.forwardRef(
     // ({ columns, colors, onClick, onMouseOver, onMouseOut }, ref) => (
-    (props, ref) => (
-        <C3Chart
+    (props, ref) => {
+        return (<C3Chart
             className="piechart"
             ref={ref}
             data={{
@@ -16,8 +16,8 @@ export const PieChart = React.forwardRef(
                 onmouseout: props.onMouseOut,
             }}
             legend={{ show: false }}
-        />
-    )
+        />)
+    }
 )
 
 export default PieChart

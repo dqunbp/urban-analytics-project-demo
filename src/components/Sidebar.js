@@ -10,14 +10,13 @@ import statisticsSelector from '../selectors/populationStats'
 export class Sidebar extends React.Component {
     render() {
         const ref = React.createRef()
-        const { isAreaSelected, columns, summary, legend } = this.props
+        const { isAreaSelected, columns, colors, summary, legend } = this.props
         return (
-            // isAreaSelected ? (
-            false ? (
+            isAreaSelected ? (
                 <div className="message">Select area of interest</div>
             ) : (
                     <div>
-                        <PieChart ref={ref} columns={columns} />
+                        <PieChart ref={ref} columns={columns} colors={colors} />
                         <Legend data={legend} chartRef={ref} />
                         <Summary data={summary} />
                         <Actions />
