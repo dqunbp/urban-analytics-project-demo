@@ -73,13 +73,7 @@ class C3Chart extends React.Component {
     }
 
     unloadData() {
-        // this.chart.unload();
-        this.chart.unload([
-            'apartments',
-            'house',
-            'other',
-            'unknown'
-        ]);
+        this.chart.unload();
     }
 
     updateChart(config) {

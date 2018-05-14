@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import featuresSelector from '../selectors/features'
 import { loadAreaData } from '../actions'
+import { getColor, brighterColor } from '../constants';
 
 // Leaflet & osmb libs Moved to CDN
 
@@ -61,12 +62,24 @@ export class Map extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        console.log('current', this.props)
-        console.log('next', prevProps)
         if (this.props.features.length > 0) {
             this._osmb.set(
                 this.featuresListToCollection(this.props.features)
             )
+            this._osmb.each(function (feature) {
+                let { type, height } = feature.properties;
+                if (type) {
+                    let color = getColor(type);
+                    let roofColor = brighterColor(color)
+                    Object.assign(feature, {
+                        properties: {
+                            height,
+                            color,
+                            roofColor
+                        }
+                    });
+                };
+            })
         }
     }
 
@@ -76,8 +89,7 @@ export class Map extends React.Component {
         this.state.map.current.remove();
     }
 
-    getData = (layer) => {
-        let withInPolygon = layer.toGeoJSON()
+    getData = (withInPolygon) => {
         let { geometry: { coordinates } } = withInPolygon
         this.props.loadAreaData(coordinates)
     }
@@ -105,7 +117,7 @@ export class Map extends React.Component {
 
             // fetch within data
             try {
-                this.getData(polygonLayer)
+                this.getData(polygonLayer.toGeoJSON())
             } catch (error) {
                 console.log(error)
             }
@@ -174,6 +186,33 @@ export class Map extends React.Component {
         // set our state
         this.setState({ map, layersControl, featureGroup })
         this.setMapBounds()
+        setTimeout(() => {
+
+            this.props.loadAreaData([
+                [
+                    [
+                        37.74275779724121,
+                        55.91337932481009
+                    ],
+                    [
+                        37.769880294799805,
+                        55.91337932481009
+                    ],
+                    [
+                        37.769880294799805,
+                        55.92607655155125
+                    ],
+                    [
+                        37.74275779724121,
+                        55.92607655155125
+                    ],
+                    [
+                        37.74275779724121,
+                        55.91337932481009
+                    ]
+                ]
+            ])
+        }, 500);
     }
 
     render() {
