@@ -57,13 +57,13 @@ export class Map extends React.Component {
     componentDidMount() {
         // code to run just after the component "mounts" / DOM elements are created
         // create the Leaflet map object
-        if (!this.state.map) this.init(this._mapNode.current);
+        if (!this.state.map) this.init(this._mapNode.current)
     }
 
     componentDidUpdate(prevProps, prevState) {
         console.log('current', this.props)
         console.log('next', prevProps)
-        if(this.props.features.length > 0) {
+        if (this.props.features.length > 0) {
             this._osmb.set(
                 this.featuresListToCollection(this.props.features)
             )
@@ -112,22 +112,59 @@ export class Map extends React.Component {
         })
     }
 
+    setMapBounds = () => {
+        let polygon = {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [
+                            [
+                                [37.684445, 55.878168],
+                                [37.81569, 55.878168],
+                                [37.81569, 55.964435],
+                                [37.684445, 55.964435],
+                                [37.684445, 55.878168]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        }
+        let leafletPolygon = L.geoJSON(polygon, {
+            onEachFeature(feature, layer) {
+                L.Util.setOptions(layer, {
+                    interactive: true,
+                    fill: false,
+                    color: "#ffffff"
+                })
+            }
+        })
+        this.map.fitBounds(leafletPolygon.getBounds())
+        leafletPolygon.addTo(this.map)
+
+    }
+
     init(id) {
         if (this.state.map) return
         // this function creates the Leaflet map object and is called after the Map component mounts
         let map = L.map(id, config.params)
+        this.map = map
 
         // setup osmb
         this._osmb = new OSMBuildings(map)
 
         // a TileLayer is used as the "basemap"
-        
+
         let layersControl = L.control.layers(config.baseLayers, undefined, { position: 'topright', collapsed: false }).addTo(map)
         let featureGroup = config.featureGroup
-        
+
         // add DrawControl to the map
         map.addControl(config.drawControl)
-        
+
         // add featureGroup to the map
         featureGroup.addTo(map)
 
@@ -136,6 +173,7 @@ export class Map extends React.Component {
 
         // set our state
         this.setState({ map, layersControl, featureGroup })
+        this.setMapBounds()
     }
 
     render() {
