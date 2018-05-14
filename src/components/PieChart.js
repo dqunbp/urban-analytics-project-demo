@@ -1,22 +1,32 @@
 import React from 'react'
-import C3Chart from 'react-c3js'
+import C3Chart from './C3Chart'
+
 
 export const PieChart = React.forwardRef(
-    // ({ columns, colors, onClick, onMouseOver, onMouseOut }, ref) => (
-    (props, ref) => (
-        <C3Chart
-            ref={ref}
-            data={{
-                columns: props.columns,
-                colors: props.colors || {},
-                type: 'pie',
-                onclick: props.onClick,
-                onmouseover: props.onMouseOver,
-                onmouseout: props.onMouseOut,
-            }}
-            legend={{ show: false }}
-        />
-    )
+    (props, ref) => {
+        return (
+            <C3Chart
+                className="piechart"
+                ref={ref}
+                data={{
+                    labels: false,
+                    columns: props.columns,
+                    colors: props.colors || {},
+                    type: 'pie',
+                    onclick: props.onClick,
+                    onmouseover: props.onMouseOver,
+                    onmouseout: props.onMouseOut,
+                }}
+                unloadBeforeLoad={true}
+                legend={{ show: false }}
+                pie={{
+                    label: {
+                        show: false
+                    }
+                }}
+            />
+        )
+    }
 )
 
 export default PieChart

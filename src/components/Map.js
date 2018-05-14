@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import featuresSelector from '../selectors/features'
 import { loadAreaData } from '../actions'
+import { getColor, brighterColor } from '../constants'
 
 // Leaflet & osmb libs Moved to CDN
 
@@ -57,13 +58,11 @@ export class Map extends React.Component {
     componentDidMount() {
         // code to run just after the component "mounts" / DOM elements are created
         // create the Leaflet map object
-        if (!this.state.map) this.init(this._mapNode.current);
+        if (!this.state.map) this.init(this._mapNode.current)
     }
 
     componentDidUpdate(prevProps, prevState) {
-        console.log('current', this.props)
-        console.log('next', prevProps)
-        if(this.props.features.length > 0) {
+        if (this.props.features.length > 0) {
             this._osmb.set(
                 this.featuresListToCollection(this.props.features)
             )
@@ -73,11 +72,10 @@ export class Map extends React.Component {
     componentWillUnmount() {
         // code to run just before unmounting the component
         // this destroys the Leaflet map object & related event listeners
-        this.state.map.current.remove();
+        this.state.map.current.remove()
     }
 
-    getData = (layer) => {
-        let withInPolygon = layer.toGeoJSON()
+    getData = (withInPolygon) => {
         let { geometry: { coordinates } } = withInPolygon
         this.props.loadAreaData(coordinates)
     }
@@ -105,10 +103,82 @@ export class Map extends React.Component {
 
             // fetch within data
             try {
-                this.getData(polygonLayer)
+                this.getData(polygonLayer.toGeoJSON())
             } catch (error) {
                 console.log(error)
             }
+        })
+    }
+
+    setMapBounds = () => {
+        let polygon = {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [
+                            [
+                                [37.684445, 55.878168],
+                                [37.81569, 55.878168],
+                                [37.81569, 55.964435],
+                                [37.684445, 55.964435],
+                                [37.684445, 55.878168]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        }
+        let leafletPolygon = L.geoJSON(polygon, {
+            onEachFeature(feature, layer) {
+                L.Util.setOptions(layer, {
+                    interactive: true,
+                    fill: false,
+                    color: "#ffffff"
+                })
+            }
+        })
+        this.map.fitBounds(leafletPolygon.getBounds())
+        leafletPolygon.addTo(this.map)
+
+    }
+
+    findFeatureById = (id) => (
+        this.props.features.find(feature => feature.id === id)
+    )
+
+    setOSMB = () => {
+        this._osmb.each((feature) => {
+            let { type, height, iou, population } = feature.properties
+            if (type) {
+                let color = getColor(type)
+                let roofColor = brighterColor(color)
+                Object.assign(feature, {
+                    properties: {
+                        type,
+                        height,
+                        iou,
+                        population,
+                        color,
+                        roofColor
+                    }
+                })
+            }
+        })
+        this._osmb.click((e) => {
+            let json = this.findFeatureById(e.feature)
+            console.log(json)
+            let content = '<b>FEATURE ID ' + e.feature + '</b>'
+            content += '<br><em>Type</em> ' + json.properties.type
+            content += '<br><em>Height</em> ' + json.properties.height
+            content += '<br><em>IOU</em> ' + json.properties.iou
+            L.popup({ maxHeight: 200, autoPanPaddingTopLeft: [50, 50] })
+                .setLatLng(L.latLng(e.lat, e.lon))
+                .setContent(content)
+                .openOn(this.map)
         })
     }
 
@@ -116,18 +186,19 @@ export class Map extends React.Component {
         if (this.state.map) return
         // this function creates the Leaflet map object and is called after the Map component mounts
         let map = L.map(id, config.params)
+        this.map = map
 
         // setup osmb
         this._osmb = new OSMBuildings(map)
 
         // a TileLayer is used as the "basemap"
-        
+
         let layersControl = L.control.layers(config.baseLayers, undefined, { position: 'topright', collapsed: false }).addTo(map)
         let featureGroup = config.featureGroup
-        
+
         // add DrawControl to the map
         map.addControl(config.drawControl)
-        
+
         // add featureGroup to the map
         featureGroup.addTo(map)
 
@@ -136,6 +207,37 @@ export class Map extends React.Component {
 
         // set our state
         this.setState({ map, layersControl, featureGroup })
+        this.setMapBounds()
+        
+        this.setOSMB()
+
+        setTimeout(() => {
+
+            this.props.loadAreaData([
+                [
+                    [
+                        37.74275779724121,
+                        55.91337932481009
+                    ],
+                    [
+                        37.769880294799805,
+                        55.91337932481009
+                    ],
+                    [
+                        37.769880294799805,
+                        55.92607655155125
+                    ],
+                    [
+                        37.74275779724121,
+                        55.92607655155125
+                    ],
+                    [
+                        37.74275779724121,
+                        55.91337932481009
+                    ]
+                ]
+            ])
+        }, 500)
     }
 
     render() {
