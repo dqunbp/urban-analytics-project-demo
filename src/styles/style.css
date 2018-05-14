@@ -62,6 +62,7 @@ body {
     padding: 1.3rem 0;
     background-color: aqua;
     border-radius: 1rem;
+    /* border-radius: 50%; */
 }
 
 .legend-item__name {

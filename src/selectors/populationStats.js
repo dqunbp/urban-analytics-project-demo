@@ -23,11 +23,19 @@ export default (state) => {
     return {
         colors: toColors(agregated.chart),
         columns: toColumns(agregated.chart),
-        summary: agregated.summary,
-        legend: agregated.chart,
+        summary: toListOfObjects(agregated.summary),
+        legend: toListOfObjects(agregated.chart),
         isAreaSelected: !features.length > 0
     }
 }
+
+const toListOfObjects = (data) => (
+    Object.keys(data).reduce((result, currentItem) => {
+        let [name, count] = [currentItem, data[currentItem]]
+        result.push({ name, count })
+        return result
+    }, [])
+)
 
 const toColumns = (chartData) => (
     Object.keys(chartData).map(key => [
