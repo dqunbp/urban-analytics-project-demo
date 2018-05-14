@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import featuresSelector from '../selectors/features'
 import { loadAreaData } from '../actions'
-import { getColor, brighterColor } from '../constants';
+import { getColor, brighterColor } from '../constants'
 
 // Leaflet & osmb libs Moved to CDN
 
@@ -66,27 +66,13 @@ export class Map extends React.Component {
             this._osmb.set(
                 this.featuresListToCollection(this.props.features)
             )
-            this._osmb.each(function (feature) {
-                let { type, height } = feature.properties;
-                if (type) {
-                    let color = getColor(type);
-                    let roofColor = brighterColor(color)
-                    Object.assign(feature, {
-                        properties: {
-                            height,
-                            color,
-                            roofColor
-                        }
-                    });
-                };
-            })
         }
     }
 
     componentWillUnmount() {
         // code to run just before unmounting the component
         // this destroys the Leaflet map object & related event listeners
-        this.state.map.current.remove();
+        this.state.map.current.remove()
     }
 
     getData = (withInPolygon) => {
@@ -160,6 +146,42 @@ export class Map extends React.Component {
 
     }
 
+    findFeatureById = (id) => (
+        this.props.features.find(feature => feature.id === id)
+    )
+
+    setOSMB = () => {
+        this._osmb.each((feature) => {
+            let { type, height, iou, population } = feature.properties
+            if (type) {
+                let color = getColor(type)
+                let roofColor = brighterColor(color)
+                Object.assign(feature, {
+                    properties: {
+                        type,
+                        height,
+                        iou,
+                        population,
+                        color,
+                        roofColor
+                    }
+                })
+            }
+        })
+        this._osmb.click((e) => {
+            let json = this.findFeatureById(e.feature)
+            console.log(json)
+            let content = '<b>FEATURE ID ' + e.feature + '</b>'
+            content += '<br><em>Type</em> ' + json.properties.type
+            content += '<br><em>Height</em> ' + json.properties.height
+            content += '<br><em>IOU</em> ' + json.properties.iou
+            L.popup({ maxHeight: 200, autoPanPaddingTopLeft: [50, 50] })
+                .setLatLng(L.latLng(e.lat, e.lon))
+                .setContent(content)
+                .openOn(this.map)
+        })
+    }
+
     init(id) {
         if (this.state.map) return
         // this function creates the Leaflet map object and is called after the Map component mounts
@@ -186,6 +208,9 @@ export class Map extends React.Component {
         // set our state
         this.setState({ map, layersControl, featureGroup })
         this.setMapBounds()
+        
+        this.setOSMB()
+
         setTimeout(() => {
 
             this.props.loadAreaData([
@@ -212,7 +237,7 @@ export class Map extends React.Component {
                     ]
                 ]
             ])
-        }, 500);
+        }, 500)
     }
 
     render() {
