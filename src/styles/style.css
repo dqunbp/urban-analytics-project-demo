@@ -15,13 +15,16 @@ body {
 }
 
 .sibebar {
+    min-width: 34.2rem;
     flex: 3;
     border-right: 1px solid black;
     border-image: linear-gradient(to top, rgba(0, 0, 0, 0) 3%, #868686, rgba(0, 0, 0, 0) 97%) 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
+    /* margin-top: 5rem; */
+    /* justify-content: space-around; */
 }
 
 .map {
@@ -124,5 +127,5 @@ body {
 .piechart {
     max-height: 19rem !important;
     position: relative;
-    margin-bottom: 5rem;
+    margin-bottom: 4rem;
 }
