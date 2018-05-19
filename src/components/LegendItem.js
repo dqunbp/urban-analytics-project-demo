@@ -8,7 +8,7 @@ export const LegendItem = ({ name, count }) => {
         <div className="legend-item">
             <div style={{
                 backgroundColor: color,
-                // boxShadow: '0 0 0 5px ' + color
+                boxShadow: '0 0 0 5px ' + color
         }} className="legend-item__count">{count}</div>
             <div className="legend-item__name">{name}</div>
         </div>
