@@ -4,6 +4,7 @@ import createSagaMiddleware from 'redux-saga'
 
 import rootSaga from './sagas'
 import areaReducer from './reducers/area'
+import filters from './reducers/filters'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
@@ -18,7 +19,8 @@ export default () => {
   const store = {
     ...createStore(
     combineReducers({
-        area: areaReducer
+        area: areaReducer,
+        filters
     }),
     composeEnhancers(applyMiddleware(...middlewares))
   ),

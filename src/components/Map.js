@@ -247,7 +247,7 @@ export class Map extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => featuresSelector(state)
+const mapStateToProps = (state) => featuresSelector(state, state.filters)
 export default connect(
     mapStateToProps,
     { loadAreaData }
