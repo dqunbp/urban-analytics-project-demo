@@ -62,11 +62,11 @@ export class Map extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.features.length > 0) {
-            this._osmb.set(
-                this.featuresListToCollection(this.props.features)
-            )
-        }
+        // if (this.props.features.length > 0) {
+        // }
+        this._osmb.set(
+            this.featuresListToCollection(this.props.features)
+        )
     }
 
     componentWillUnmount() {
