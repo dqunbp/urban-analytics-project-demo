@@ -47,13 +47,20 @@ body {
 }
 
 .legend-item {
-    
     text-align: center;
     margin-bottom: 2rem;
     display: flex;
     align-items: center;
     border-radius: 1rem;
     width: 22rem;
+}
+
+.legend-item--muted .legend-item__count {
+    opacity: .2;
+}
+
+.legend-item--muted .legend-item__name {
+    color: gray;
 }
 
 .legend-item__count {

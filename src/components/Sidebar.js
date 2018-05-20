@@ -6,7 +6,7 @@ import Summary from './Summary'
 import Actions from './Actions'
 
 import { setFeaturesFilter } from '../actions/filters'
-import statisticsSelector from '../selectors/populationStats'
+import statisticsSelector from '../selectors/legend'
 
 export class Sidebar extends React.Component {
     render() {
@@ -17,9 +17,9 @@ export class Sidebar extends React.Component {
                 <div className="message">Select area of interest</div>
             ) : (
                     <div>
-                        <PieChart ref={ref} columns={columns} colors={colors} />
+                        <PieChart ref={ref} />
                         <Legend setFeaturesFilter={setFeaturesFilter} data={legend} chartRef={ref} />
-                        <Summary data={summary} />
+                        <Summary />
                         <Actions />
                     </div>
                 )
