@@ -3,8 +3,9 @@ import { call, put, take, all, fork, takeEvery, takeLatest } from 'redux-saga/ef
 import { api } from './api'
 import { area } from './actions'
 import * as actions from './actions'
+import { clearFilter } from './actions/filters'
 
-function* loadArea({coordinates}) {
+function* loadArea({ coordinates }) {
     try {
         yield put(area.request(coordinates))
         const response = yield call(api.fetchArea, coordinates)
@@ -14,8 +15,17 @@ function* loadArea({coordinates}) {
     }
 }
 
+function* clearFilters() {
+    yield put(clearFilter)
+}
+
 function* watchALoadArea() {
-    yield takeLatest(actions.LOAD_AREA_DATA, loadArea)
+    while (true) {
+        // yield call(clearFilters)
+        const { coordinates } = yield take(actions.LOAD_AREA_DATA)
+        yield call(loadArea, { coordinates })
+    }
+    // yield takeLatest(actions.LOAD_AREA_DATA, loadArea)
 }
 
 export default function* root() {

@@ -15,6 +15,8 @@ export default (state = filterDefaultState, action) => {
                 let features = state.features.concat(feature)
                 return { features }
             }
+        case 'CLEAR_FEATURES_FILTER':
+            return { features: [] }
         default:
             return state
     }
