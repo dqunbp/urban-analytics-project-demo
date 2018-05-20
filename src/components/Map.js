@@ -171,8 +171,8 @@ export class Map extends React.Component {
         this._osmb.click((e) => {
             let json = this.findFeatureById(e.feature)
             console.log(json)
-            let content = '<b>FEATURE ID ' + e.feature + '</b>'
-            content += '<br><em>Type</em> ' + json.properties.type
+            let content = '<b>' + json.properties.type + '</b>'
+            // content += '<br><em>Type</em> ' + json.properties.type
             content += '<br><em>Height</em> ' + json.properties.height
             content += '<br><em>IOU</em> ' + json.properties.iou
             L.popup({ maxHeight: 200, autoPanPaddingTopLeft: [50, 50] })
@@ -211,33 +211,33 @@ export class Map extends React.Component {
         
         this.setOSMB()
 
-        setTimeout(() => {
+        // setTimeout(() => {
 
-            this.props.loadAreaData([
-                [
-                    [
-                        37.74275779724121,
-                        55.91337932481009
-                    ],
-                    [
-                        37.769880294799805,
-                        55.91337932481009
-                    ],
-                    [
-                        37.769880294799805,
-                        55.92607655155125
-                    ],
-                    [
-                        37.74275779724121,
-                        55.92607655155125
-                    ],
-                    [
-                        37.74275779724121,
-                        55.91337932481009
-                    ]
-                ]
-            ])
-        }, 500)
+        //     this.props.loadAreaData([
+        //         [
+        //             [
+        //                 37.74275779724121,
+        //                 55.91337932481009
+        //             ],
+        //             [
+        //                 37.769880294799805,
+        //                 55.91337932481009
+        //             ],
+        //             [
+        //                 37.769880294799805,
+        //                 55.92607655155125
+        //             ],
+        //             [
+        //                 37.74275779724121,
+        //                 55.92607655155125
+        //             ],
+        //             [
+        //                 37.74275779724121,
+        //                 55.91337932481009
+        //             ]
+        //         ]
+        //     ])
+        // }, 500)
     }
 
     render() {
