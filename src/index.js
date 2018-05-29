@@ -4,7 +4,6 @@ import { Provider } from 'react-redux'
 import 'normalize.css'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-draw/dist/leaflet.draw.css'
-import 'c3/c3.css'
 import './styles/style.css'
 
 import rootSaga from './sagas'

@@ -2,7 +2,7 @@ import React from 'react'
 
 import LegendItem from './LegendItem'
 
-export const Legend = ({ data, chartRef, setFeaturesFilter }) => (
+export const Legend = ({ data, setFeaturesFilter }) => (
     <div className="legend">
         {data.map(
             ({ name, count, isActive }) => 

@@ -18,7 +18,7 @@ module.exports = (env) => {
   })
 
   return {
-    entry: ['babel-polyfill', './src/index.js'],
+    entry: './src/index.js',
     output: {
       path: path.join(__dirname, 'public', 'dist'),
       filename: 'bundle.js'
@@ -58,6 +58,7 @@ module.exports = (env) => {
     plugins: [
       defineEnvVariables,
       CSSExtract,
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     ],
     devtool: isProduction ? 'source-map' : 'inline-source-map',
     devServer: {
