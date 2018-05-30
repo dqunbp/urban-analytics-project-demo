@@ -33,7 +33,8 @@ config.drawControl = new L.Control.Draw({
             icon: new L.DivIcon({
                 iconSize: new L.Point(17, 17),
                 className: 'point'
-            })
+            }),
+            allowIntersection: false
         },
         polyline: false,
         circle: false,
