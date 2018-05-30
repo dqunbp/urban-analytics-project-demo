@@ -1,8 +1,11 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
 
 
 import Map from './Map'
 import Sidebar from './Sidebar'
+import loadingHoc from './LoadingIndicator'
 
 export class UrbanAnalyticsApp extends React.Component {
     render() {
@@ -19,4 +22,10 @@ export class UrbanAnalyticsApp extends React.Component {
     }
 }
 
-export default UrbanAnalyticsApp
+
+const mapStateToProps = (state) => ({ isLoading: state.area.isFetching })
+
+export default compose(
+    connect(mapStateToProps),
+    loadingHoc()
+)(UrbanAnalyticsApp)

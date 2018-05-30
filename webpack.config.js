@@ -14,7 +14,7 @@ module.exports = (env) => {
   const isProduction = env === 'production'
   const CSSExtract = new ExtractTextPlugin('styles.css')
   const defineEnvVariables = new webpack.DefinePlugin({
-    'process.env.REACT_APP_API_URL': JSON.stringify(process.env.REACT_APP_API_URL || 'http://localhost:8080')
+    'process.env.REACT_APP_API_URL': JSON.stringify(process.env.REACT_APP_API_URL || 'https://salty-dawn-19251.herokuapp.com')
   })
 
   return {

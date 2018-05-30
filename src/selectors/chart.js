@@ -1,4 +1,4 @@
-import { getColor } from '../constants'
+import { getColor, brighterColor } from '../constants'
 
 export default (state, filters) => {
     let { features } = state.area
@@ -24,31 +24,18 @@ export default (state, filters) => {
 }
 
 const toChart = (aggregatedData) => {
-    let labels = [],
-        data = [],
-        backgroundColor = [],
-        hoverBackgroundColor = [];
+    let data = [];
 
-    for (let feature in aggregatedData) {
-        labels.push(feature)
-        data.push(aggregatedData[feature])
-        backgroundColor.push(getColor(feature))
-        hoverBackgroundColor.push(getColor(feature))
+    for (let label in aggregatedData) {
+        let color = getColor(label)
+        let highlight = brighterColor(color)
+        let value = aggregatedData[label]
+        data.push({
+            value,
+            color,
+            highlight,
+            label
+        })
     }
-
-    return {
-        labels,
-        datasets: [{
-            data,
-            backgroundColor,
-            hoverBackgroundColor
-        }]
-    }
+    return data
 }
-
-const toColors = (chartData) => (
-    Object.keys(chartData).reduce((result, currentItem) => {
-        result[currentItem] = getColor(currentItem)
-        return result
-    }, {})
-)

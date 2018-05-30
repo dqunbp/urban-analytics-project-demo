@@ -7,6 +7,20 @@ export const colors = {
     red: "rgb(214, 39, 40)",
 }
 
+// export const colors = {
+//     orange: "#FFCE56",
+//     blue: "#36A2EB",
+//     green: "#4BC0C0",
+//     red: "#FF6384",
+// }
+
+// export const colors = {
+//     orange: "#E39012",
+//     blue: "#1B63FF",
+//     green: "#22A111",
+//     red: "#A11171",
+// }
+
 export const itemsColors = {
     apartments: 'orange',
     house: 'green',
