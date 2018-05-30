@@ -7,7 +7,6 @@ jq
 
 # Parcel
 .cache
-dist/
 
 # Logs
 logs
