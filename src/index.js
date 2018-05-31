@@ -10,6 +10,10 @@ import rootSaga from './sagas'
 import configureStore from './configureStore'
 import UrbanAnalyticsApp from './components/UrbanAnalyticsApp'
 
+import ReactGA from 'react-ga'
+ReactGA.initialize('UA-120159289-1')
+ReactGA.pageview(window.location.pathname + window.location.search)
+
 const mountNode = document.getElementById("app")
 const store = configureStore()
 const jsx = (
