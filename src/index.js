@@ -10,9 +10,9 @@ import rootSaga from './sagas'
 import configureStore from './configureStore'
 import UrbanAnalyticsApp from './components/UrbanAnalyticsApp'
 
-import ReactGA from 'react-ga'
-ReactGA.initialize('UA-120159289-1')
-ReactGA.pageview(window.location.pathname + window.location.search)
+// import ReactGA from 'react-ga'
+// ReactGA.initialize('UA-120159289-1')
+// ReactGA.pageview(window.location.pathname + window.location.search)
 
 import LogRocket from 'logrocket'
 LogRocket.init('hz29tl/uad_demo_prod')
