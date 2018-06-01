@@ -22,8 +22,8 @@ function* clearFilters() {
 function* watchALoadArea() {
     while (true) {
         const { coordinates } = yield take(actions.LOAD_AREA_DATA)
-        yield call(clearFilters)
         yield call(loadArea, { coordinates })
+        yield call(clearFilters)
     }
     // yield takeLatest(actions.LOAD_AREA_DATA, loadArea)
 }
