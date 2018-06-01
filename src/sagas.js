@@ -16,13 +16,13 @@ function* loadArea({ coordinates }) {
 }
 
 function* clearFilters() {
-    yield put(clearFilter)
+    yield put(clearFilter())
 }
 
 function* watchALoadArea() {
     while (true) {
-        // yield call(clearFilters)
         const { coordinates } = yield take(actions.LOAD_AREA_DATA)
+        yield call(clearFilters)
         yield call(loadArea, { coordinates })
     }
     // yield takeLatest(actions.LOAD_AREA_DATA, loadArea)

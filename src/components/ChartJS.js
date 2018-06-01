@@ -4,8 +4,8 @@ import Pie from 'react-chartjs/lib/Pie'
 
 import chartSelector from '../selectors/chart'
 
-export const PieChart = ({ data }) => (
-    <Pie className="piechart" data={data} />
+export const PieChart = ({ data, redraw=false }) => (
+    <Pie className="piechart" data={data} redraw={redraw} />
 )
 
 const mapStateToProps = (state) => chartSelector(state, state.filters)

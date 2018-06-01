@@ -9,14 +9,23 @@ import { setFeaturesFilter } from '../actions/filters'
 import statisticsSelector from '../selectors/legend'
 
 export class Sidebar extends React.Component {
+
+    componentWillReceiveProps(nextProps) {
+        this.redraw = false
+        if (this.props.isFetching && !nextProps.isFetching){
+            this.redraw = true
+        }
+    }
+
     render() {
         const { isAreaSelected, columns, colors, summary, legend, setFeaturesFilter } = this.props
+        const redraw = this.redraw
         return (
-            isAreaSelected ? (
+            !isAreaSelected ? (
                 <div className="message">Select area of interest</div>
             ) : (
                     <div>
-                        <PieChart  />
+                        <PieChart redraw={redraw} />
                         <Legend setFeaturesFilter={setFeaturesFilter} data={legend} />
                         <Summary />
                         <Actions />

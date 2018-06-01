@@ -108,6 +108,12 @@ export class Map extends React.Component {
             } catch (error) {
                 console.log(error)
             }
+
+            // Zoom map to the target
+            map.flyTo(
+                polygonLayer.getCenter(),
+                15
+            )
         })
     }
 
