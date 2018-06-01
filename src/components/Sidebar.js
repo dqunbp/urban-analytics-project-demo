@@ -28,7 +28,7 @@ export class Sidebar extends React.Component {
                         <PieChart redraw={redraw} />
                         <Legend setFeaturesFilter={setFeaturesFilter} data={legend} />
                         <Summary />
-                        <Actions />
+                        {/* <Actions /> */}
                     </div>
                 )
         )
