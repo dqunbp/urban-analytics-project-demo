@@ -91,12 +91,10 @@ export class Map extends React.Component {
     initDrawEvents = (map, featureGroup) => {
         map.on(L.Draw.Event.CREATED, (event) => {
             let polygonLayer = event.layer
-            console.log(polygonLayer.toGeoJSON().geometry.coordinates)
 
             // Add area polygon layer to the map
             L.Util.setOptions(polygonLayer, { interactive: true, fill: false })
             let { polygonLayer: currentLayer } = this.state
-            console.log(this.state)
             if (currentLayer) {
                 featureGroup.removeLayer(currentLayer)
                 this.setState(() => ({ polygonLayer: null }))
@@ -173,7 +171,6 @@ export class Map extends React.Component {
         })
         this._osmb.click((e) => {
             let json = this.findFeatureById(e.feature)
-            console.log(json)
             let content = '<b>' + json.properties.type + '</b>'
             // content += '<br><em>Type</em> ' + json.properties.type
             content += '<br><em>Height</em> ' + json.properties.height

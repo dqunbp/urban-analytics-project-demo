@@ -15,7 +15,10 @@ import UrbanAnalyticsApp from './components/UrbanAnalyticsApp'
 // ReactGA.pageview(window.location.pathname + window.location.search)
 
 import LogRocket from 'logrocket'
+import setupLogRocketReact from 'logrocket-react'
+
 LogRocket.init('hz29tl/uad_demo_prod')
+setupLogRocketReact(LogRocket)
 
 const mountNode = document.getElementById("app")
 const store = configureStore()

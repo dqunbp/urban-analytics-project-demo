@@ -10,11 +10,12 @@ import filters from './reducers/filters'
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 const sagaMiddleware = createSagaMiddleware()
+const logRocketMiddleware = LogRocket.reduxMiddleware()
 
 export default () => {
     let middlewares = [
         sagaMiddleware,
-        LogRocket.reduxMiddleware()
+        logRocketMiddleware
     ]
     if (process.env.NODE_ENV !== 'production') {
         const logger = createLogger()
