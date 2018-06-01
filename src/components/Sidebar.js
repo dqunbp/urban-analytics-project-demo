@@ -14,12 +14,7 @@ export class Sidebar extends React.Component {
         this.redraw = false
         if (this.props.isFetching === true && nextProps.isFetching === false){
             this.redraw = true
-            console.log('REDRAW!!!')
         }
-        console.log('====================================')
-        console.log(this.props)
-        console.log(nextProps)
-        console.log('====================================')
     }
 
     render() {

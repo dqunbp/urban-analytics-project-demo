@@ -25,7 +25,6 @@ function* watchALoadArea() {
         yield call(loadArea, { coordinates })
         yield call(clearFilters)
     }
-    // yield takeLatest(actions.LOAD_AREA_DATA, loadArea)
 }
 
 export default function* root() {
