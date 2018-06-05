@@ -29,13 +29,17 @@ export class UrbanAnalyticsApp extends React.Component {
                     onClick={() => {
                         if (isFeaturesSelected === true && isSidebarOpened === false) {
                             this.setState(() => ({ isSidebarOpened: true }))
-                        }
-                    }}
+                        }}}
+                    onTouchEnd={() => {
+                        if (isFeaturesSelected === true && isSidebarOpened === false) {
+                            this.setState(() => ({ isSidebarOpened: true }))
+                        }}}
                 >
                     {isFeaturesSelected && isSidebarOpened ? (
                         <div
                             className="close-button"
                             onClick={() => this.setState(() => ({ isSidebarOpened: false }))}
+                            onTouchEnd={() => this.setState(() => ({ isSidebarOpened: false }))}
                         ></div>
                     ) : undefined
                     }
