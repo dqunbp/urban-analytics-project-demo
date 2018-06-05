@@ -43,8 +43,8 @@ body {
     .app {
         display: flex;
         flex: 1;
-        min-height: 100%;
-        height: calc(100vh - 6rem + 1rem);
+        min-height: 100vh;
+        height: 100vh;
         flex-direction: column;
         justify-content: space-between;
     }
