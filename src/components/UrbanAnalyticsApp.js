@@ -8,11 +8,43 @@ import Sidebar from './Sidebar'
 import loadingHoc from './LoadingIndicator'
 
 export class UrbanAnalyticsApp extends React.Component {
+
+    state = {
+        isSidebarOpened: false
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.isFeaturesSelected === false && nextProps.isFeaturesSelected === true) {
+            this.setState(() => ({ isSidebarOpened: true }))
+        }
+    }
+
     render() {
+        const { isSidebarOpened } = this.state
+        const { isFeaturesSelected } = this.props
         return (
             <div className="app">
-                <div className="sibebar">
-                    <Sidebar />
+                <div
+                    className={"sibebar " + (isFeaturesSelected && isSidebarOpened ? "sidebar--active" : "")}
+                    onClick={() => {
+                        if (isFeaturesSelected === true && isSidebarOpened === false) {
+                            this.setState(() => ({ isSidebarOpened: true }))
+                        }
+                    }}
+                >
+                    {isFeaturesSelected && isSidebarOpened ? (
+                        <div
+                            className="close-button"
+                            onClick={() => this.setState(() => ({ isSidebarOpened: false }))}
+                        ></div>
+                    ) : undefined
+                    }
+                    {isFeaturesSelected === true && isSidebarOpened === false 
+                        ? 
+                        <div className="message">Show statistics</div>
+                        :
+                        <Sidebar /> 
+                    }
                 </div>
                 <div className="map">
                     <Map />
@@ -23,7 +55,14 @@ export class UrbanAnalyticsApp extends React.Component {
 }
 
 
-const mapStateToProps = (state) => ({ isLoading: state.area.isFetching })
+const mapStateToProps = (state) => {
+    let isLoading = state.area.isFetching
+    let isFeaturesSelected = state.area.features.length > 0
+    return {
+        isLoading,
+        isFeaturesSelected
+    }
+}
 
 export default compose(
     connect(mapStateToProps),
