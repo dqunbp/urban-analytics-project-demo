@@ -50,7 +50,7 @@ body {
     }
     .sibebar {
         position: absolute;
-        bottom: var(--sidebar-mobile-margin);
+        bottom: calc(var(--sidebar-mobile-margin) + 4rem);
         width: calc(100% - var(--sidebar-mobile-margin)*2);
         height: 6rem;
         left: 50%;
@@ -63,20 +63,19 @@ body {
         justify-content: space-around;
         transition: all .2s ease-in-out;
     }
-
     .sidebar--active {
         border: 3px dashed gray;
-        height: calc(100% - var(--sidebar-mobile-margin)*2);
+        height: calc(100% - var(--sidebar-mobile-margin)*2 - 4rem);
         background-color: white;
     }
     .close-button {
         position: absolute;
         right: 1rem;
         top: 1rem;
-        width: 3rem;
-        height: 3rem;
+        width: 10rem;
+        height: 10rem;
+        z-index: 20000;
     }
-    
     .close-button::after {
         content: '';
         position: absolute;
@@ -86,8 +85,9 @@ body {
         bottom: 0;
         transform: rotate(-45deg);
         transform-origin: left;
+        bottom: 40%;
+        right: 25%;
     }
-    
     .close-button::before {
         content: '';
         position: absolute;
@@ -96,6 +96,8 @@ body {
         height: .2rem;
         transform: rotate(45deg);
         transform-origin: left;
+        top: 30%;
+        right: 25%;
     }
     #map {
         height: 100%;
@@ -211,6 +213,10 @@ body {
 .message {
     width: 9rem;
     text-align: center;
+}
+
+.message--button {
+    border: .2rem solid gray;
 }
 
 .piechart {

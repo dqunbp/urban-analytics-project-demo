@@ -19,6 +19,14 @@ export class UrbanAnalyticsApp extends React.Component {
         }
     }
 
+    handleSidebarClick = () => {
+        const { isSidebarOpened } = this.state
+        const { isFeaturesSelected } = this.props
+        if (isFeaturesSelected === true && isSidebarOpened === false) {
+            this.setState(() => ({ isSidebarOpened: true }))
+        }
+    }
+
     render() {
         const { isSidebarOpened } = this.state
         const { isFeaturesSelected } = this.props
@@ -26,20 +34,14 @@ export class UrbanAnalyticsApp extends React.Component {
             <div className="app">
                 <div
                     className={"sibebar " + (isFeaturesSelected && isSidebarOpened ? "sidebar--active" : "")}
-                    onClick={() => {
-                        if (isFeaturesSelected === true && isSidebarOpened === false) {
-                            this.setState(() => ({ isSidebarOpened: true }))
-                        }}}
-                    onTouchEnd={() => {
-                        if (isFeaturesSelected === true && isSidebarOpened === false) {
-                            this.setState(() => ({ isSidebarOpened: true }))
-                        }}}
+                    onClick={() => this.handleSidebarClick()}
+                    // onTouchEnd={() => this.handleSidebarClick()}
                 >
                     {isFeaturesSelected && isSidebarOpened ? (
                         <div
                             className="close-button"
                             onClick={() => this.setState(() => ({ isSidebarOpened: false }))}
-                            onTouchEnd={() => this.setState(() => ({ isSidebarOpened: false }))}
+                            // onTouchEnd={() => this.setState(() => ({ isSidebarOpened: false }))}
                         ></div>
                     ) : undefined
                     }
