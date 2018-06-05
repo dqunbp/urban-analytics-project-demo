@@ -15,7 +15,7 @@ body {
     .app {
         display: flex;
         flex: 1;
-        min-height: 100vh;
+        /* min-height: 100vh; */
         height: 100%;
     }
     .sibebar {
@@ -50,7 +50,7 @@ body {
     }
     .sibebar {
         position: absolute;
-        bottom: calc(var(--sidebar-mobile-margin) + 4rem);
+        bottom: var(--sidebar-mobile-margin);
         width: calc(100% - var(--sidebar-mobile-margin)*2);
         height: 6rem;
         left: 50%;
@@ -65,7 +65,7 @@ body {
     }
     .sidebar--active {
         border: 3px dashed gray;
-        height: calc(100% - var(--sidebar-mobile-margin)*2 - 4rem);
+        height: calc(100% - var(--sidebar-mobile-margin)*2);
         background-color: white;
     }
     .close-button {
