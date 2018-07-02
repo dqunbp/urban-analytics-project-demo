@@ -3,7 +3,8 @@ import * as types from '../actions'
 const areaReducerDefaultState = {
     isFetching: false,
     errorMessage: null,
-    features: []
+    features: [],
+    selectedArea: null
 }
 
 export default (state = areaReducerDefaultState, action) => {
@@ -11,13 +12,15 @@ export default (state = areaReducerDefaultState, action) => {
         case types.FETCH_AREA.REQUEST:
             return {
                 ...state,
-                isFetching: true
+                isFetching: true,
+                selectedArea: action.coordinates
             }
         case types.FETCH_AREA.SUCCESS:
             return {
                 ...state,
                 isFetching: false,
-                features: action.features
+                features: action.features,
+                // selectedArea: action.coordinates
             }
         case types.FETCH_AREA.FAILURE:
             return {

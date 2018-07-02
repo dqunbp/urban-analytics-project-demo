@@ -26,7 +26,7 @@ body {
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: space-around;
+        justify-content: center;
     }
     .map {
         flex: 12;
@@ -60,7 +60,7 @@ body {
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: space-around;
+        justify-content: center;
         transition: all .2s ease-in-out;
     }
     .sidebar--active {
