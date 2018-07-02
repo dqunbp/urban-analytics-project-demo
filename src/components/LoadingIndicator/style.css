@@ -25,3 +25,28 @@
     align-items: center;
     background: rgba(255, 255, 255, .7);
 }
+
+.spinner {
+    margin: auto;
+    border: 1rem solid lightgray;
+    height: 7rem;
+    width: 7rem;
+    border-radius: 100%;
+    border-top-color: rgb(31, 119, 180);
+    border-bottom-color: rgb(44, 160, 44);
+    animation: spin 2s ease infinite;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    50% {
+      transform: rotate(360deg);
+      border-top-color: rgb(255, 127, 14);
+      border-bottom-color: rgb(255, 127, 14);
+    }
+    100% {
+      transform: rotate(720deg);
+    }
+  }
