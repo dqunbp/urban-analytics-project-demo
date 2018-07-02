@@ -18,11 +18,11 @@ export class Sidebar extends React.Component {
     }
 
     render() {
-        const { isAreaSelected, columns, colors, summary, legend, setFeaturesFilter } = this.props
+        const { userMessage, isAreaSelected, legend, setFeaturesFilter } = this.props
         const redraw = this.redraw
         return (
-            !isAreaSelected ? (
-                <div className="message">Select area of interest</div>
+            userMessage ? (
+                <div className="message">{userMessage}</div>
             ) : (
                     <div>
                         <PieChart redraw={redraw} />

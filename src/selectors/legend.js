@@ -1,7 +1,7 @@
 import { getColor } from '../constants'
 
 export default (state, filters) => {
-    let { features, isFetching } = state.area
+    let { features, isFetching, userMessage } = state.area
     let agregated = features
         .reduce((res, feature) => {
             let { type, population } = feature.properties
@@ -18,7 +18,8 @@ export default (state, filters) => {
     return {
         legend: toListOfObjects(agregated.chart, filters),
         isAreaSelected: features.length > 0,
-        isFetching
+        isFetching,
+        userMessage
     }
 }
 

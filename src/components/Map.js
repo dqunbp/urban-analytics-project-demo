@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import featuresSelector from '../selectors/features'
-import { loadAreaData } from '../actions'
+import { loadAreaData, setUserMessage } from '../actions'
 import { getColor, brighterColor } from '../constants'
 
 // Leaflet & osmb libs Moved to CDN
@@ -43,6 +43,28 @@ config.drawControl = new L.Control.Draw({
     },
     edit: false
 })
+
+const AVIABLE_AREA = {
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [37.684445, 55.878168],
+                        [37.81569, 55.878168],
+                        [37.81569, 55.964435],
+                        [37.684445, 55.964435],
+                        [37.684445, 55.878168]
+                    ]
+                ]
+            }
+        }
+    ]
+}
 
 export class Map extends React.Component {
 
@@ -91,7 +113,6 @@ export class Map extends React.Component {
     initDrawEvents = (map, featureGroup) => {
         map.on(L.Draw.Event.CREATED, (event) => {
             let polygonLayer = event.layer
-
             // Add area polygon layer to the map
             L.Util.setOptions(polygonLayer, { interactive: true, fill: false })
             let { polygonLayer: currentLayer } = this.state
@@ -102,44 +123,32 @@ export class Map extends React.Component {
             featureGroup.addLayer(polygonLayer)
             this.setState(() => ({ polygonLayer }))
 
-            // fetch within data
-            try {
-                this.getData(polygonLayer.toGeoJSON())
-            } catch (error) {
-                console.log(error)
+            // Check if polygon in aviable area
+            if (!this.aviableAreaBounds.intersects(
+                polygonLayer.getBounds()
+            )) {
+                this.props.setUserMessage('No data found for selected area, please select polygon in the white rectangle area')
+            } else {
+    
+                // fetch within data
+                try {
+                    this.getData(polygonLayer.toGeoJSON())
+                } catch (error) {
+                    console.log(error)
+                }
+    
+                // Zoom map to the target
+                map.flyTo(
+                    polygonLayer.getCenter(),
+                    15
+                )
             }
 
-            // Zoom map to the target
-            map.flyTo(
-                polygonLayer.getCenter(),
-                15
-            )
         })
     }
 
     setMapBounds = () => {
-        let polygon = {
-            "type": "FeatureCollection",
-            "features": [
-                {
-                    "type": "Feature",
-                    "properties": {},
-                    "geometry": {
-                        "type": "Polygon",
-                        "coordinates": [
-                            [
-                                [37.684445, 55.878168],
-                                [37.81569, 55.878168],
-                                [37.81569, 55.964435],
-                                [37.684445, 55.964435],
-                                [37.684445, 55.878168]
-                            ]
-                        ]
-                    }
-                }
-            ]
-        }
-        let leafletPolygon = L.geoJSON(polygon, {
+        let leafletPolygon = L.geoJSON(AVIABLE_AREA, {
             onEachFeature(feature, layer) {
                 L.Util.setOptions(layer, {
                     interactive: true,
@@ -150,6 +159,8 @@ export class Map extends React.Component {
         })
         this.map.fitBounds(leafletPolygon.getBounds())
         leafletPolygon.addTo(this.map)
+        this.aviableAreaBounds = leafletPolygon.getBounds()
+        // this.map.setMaxBounds(leafletPolygon.getBounds())
 
     }
 
@@ -256,5 +267,5 @@ export class Map extends React.Component {
 const mapStateToProps = (state) => featuresSelector(state, state.filters)
 export default connect(
     mapStateToProps,
-    { loadAreaData }
+    { loadAreaData, setUserMessage }
 )(Map)

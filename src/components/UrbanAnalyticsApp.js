@@ -63,7 +63,8 @@ export class UrbanAnalyticsApp extends React.Component {
 
 const mapStateToProps = (state) => {
     let isLoading = state.area.isFetching
-    let isFeaturesSelected = state.area.features.length > 0
+    let { userMessage } = state.area
+    let isFeaturesSelected = userMessage === null //state.area.features.length > 0
     return {
         isLoading,
         isFeaturesSelected
