@@ -62,11 +62,13 @@ body {
         align-items: center;
         justify-content: center;
         transition: all .2s ease-in-out;
+        margin-bottom: 5rem;
     }
     .sidebar--active {
         border: 3px dashed gray;
         height: calc(100% - var(--sidebar-mobile-margin)*2);
         background-color: white;
+        margin-bottom: 0;
     }
     .close-button {
         position: absolute;
@@ -211,7 +213,7 @@ body {
 }
 
 .message {
-    width: 9rem;
+    width: 24rem;
     text-align: center;
 }
 
