@@ -216,6 +216,9 @@ export class Map extends React.Component {
         this.setState(() => ({ mask }))
 
         this.props.clearData()
+        if(this.state.polygonLayer) {
+            this.state.polygonLayer.remove()
+        }
 
         // this.map.once('moveend', () => {
         //     console.log(this.map.getZoom())
