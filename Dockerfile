@@ -1,9 +1,7 @@
 FROM node:carbon
-WORKDIR /usr/src/app
-COPY server/package*.json ./
+ADD . /app
+WORKDIR /app
 RUN npm install -qy
-COPY server/ ./
-COPY public/ ./public
-EXPOSE 8080
+EXPOSE 5000
 
 CMD [ "npm", "start" ]

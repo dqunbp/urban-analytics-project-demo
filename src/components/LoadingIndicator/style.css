@@ -32,8 +32,8 @@
     height: 7rem;
     width: 7rem;
     border-radius: 100%;
-    border-top-color: rgb(31, 119, 180);
-    border-bottom-color: rgb(44, 160, 44);
+    border-top-color: #36A2EB;
+    border-bottom-color: #4BC0C0;
     animation: spin 2s ease infinite;
   }
   
@@ -43,8 +43,8 @@
     }
     50% {
       transform: rotate(360deg);
-      border-top-color: rgb(255, 127, 14);
-      border-bottom-color: rgb(255, 127, 14);
+      border-top-color: #FFCE56;
+      border-bottom-color: #FFCE56;
     }
     100% {
       transform: rotate(720deg);

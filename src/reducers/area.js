@@ -32,6 +32,11 @@ export default (state = areaReducerDefaultState, action) => {
                 errorMessage: action.error,
                 userMessage: 'Something went wrond, please try again'
             }
+        // CLEAR DATA
+        case types.CLEAR_DATA:
+            return {
+                ...areaReducerDefaultState
+            }
         // SET USER MESSAGE
         case types.SET_USER_MESSAGE:
             return {

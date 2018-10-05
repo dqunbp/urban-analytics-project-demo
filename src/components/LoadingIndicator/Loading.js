@@ -1,5 +1,5 @@
 import React from 'react'
 
 export default () => (
-    <div class="spinner"></div>
+    <div className="spinner"></div>
 )

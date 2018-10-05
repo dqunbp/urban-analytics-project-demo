@@ -5,14 +5,14 @@ export default (state, filters) => {
             filters.features.indexOf(properties.type) === -1
         )
         .reduce((res, feature) => {
-            let { type, population } = feature.properties
+            let { population } = feature.properties
             res.summary.buildings += 1
-            res.summary.citizens += ~~parseFloat(population)
+            // res.summary.citizens += ~~parseFloat(population)
             return res
         }, {
                 summary: {
                     buildings: 0,
-                    citizens: 0
+                    // citizens: 0
                 }
             }
         )

@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Pie from 'react-chartjs/lib/Pie'
+import Pie from 'react-chartjs/lib/pie'
 
 import chartSelector from '../selectors/chart'
 

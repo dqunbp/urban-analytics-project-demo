@@ -1,18 +1,18 @@
 import { color } from 'd3-color'
 
-export const colors = {
-    orange: "rgb(255, 127, 14)",
-    blue: "rgb(31, 119, 180)",
-    green: "rgb(44, 160, 44)",
-    red: "rgb(214, 39, 40)",
-}
-
 // export const colors = {
-//     orange: "#FFCE56",
-//     blue: "#36A2EB",
-//     green: "#4BC0C0",
-//     red: "#FF6384",
+//     orange: "#FBD685",
+//     blue: "#7A5D7E",
+//     green: "#63AEBB",
+//     red: "rgb(214, 39, 40)",
 // }
+
+export const colors = {
+    orange: "#FFCE56",
+    blue: "#36A2EB",
+    green: "#4BC0C0",
+    red: "#FF6384",
+}
 
 // export const colors = {
 //     orange: "#E39012",

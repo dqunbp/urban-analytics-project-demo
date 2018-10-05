@@ -1,8 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import Select from 'react-select'
 
 import featuresSelector from '../selectors/features'
-import { loadAreaData, setUserMessage } from '../actions'
+import { loadAreaData, setUserMessage, clearData } from '../actions'
 import { getColor, brighterColor } from '../constants'
 
 // Leaflet & osmb libs Moved to CDN
@@ -18,7 +19,8 @@ config.params = {
     scrollwheel: false,
     legends: true,
     infoControl: false,
-    attributionControl: false
+    attributionControl: false,
+    zoomControl: false
 }
 config.baseLayers = {
     "Google": google,
@@ -41,31 +43,69 @@ config.drawControl = new L.Control.Draw({
         marker: false,
         circlemarker: false,
     },
-    edit: false
+    edit: false,
+    position: 'topright'
 })
 
-const AVIABLE_AREA = {
-    "type": "FeatureCollection",
-    "features": [
-        {
-            "type": "Feature",
-            "properties": {},
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [
-                    [
-                        [37.684445, 55.878168],
-                        [37.81569, 55.878168],
-                        [37.81569, 55.964435],
-                        [37.684445, 55.964435],
-                        [37.684445, 55.878168]
-                    ]
-                ]
-            }
-        }
-    ]
-}
+// const AVIABLE_AREA = [ [ [ 1.442096947472926, 43.63383794331183 ],
+// [ 1.503059317599129, 43.63383794331183 ],
+// [ 1.503059317599129, 43.67427002540336 ],
+// [ 1.442096947472926, 43.67427002540336 ],
+// [ 1.442096947472926, 43.63383794331183 ] ] ]
 
+const MYTISHI_COORDS = [[
+    [37.684445, 55.878168],
+    [37.81569, 55.878168],
+    [37.81569, 55.964435],
+    [37.684445, 55.964435],
+    [37.684445, 55.878168]]]
+
+const KIROV_BOUNDS = new L.LatLngBounds([[58.67986899986801, 49.70018801727667], [58.53993923926524, 49.49997393709766]])
+const KIROV_LATLNGS = [
+    KIROV_BOUNDS.getSouthWest(),
+    KIROV_BOUNDS.getNorthWest(),
+    KIROV_BOUNDS.getNorthEast(),
+    KIROV_BOUNDS.getSouthEast()
+];
+const KIROV_COORDS = L.GeoJSON.latLngsToCoords(
+    KIROV_LATLNGS
+)
+
+L.Mask = L.Polygon.extend({
+    options: {
+        stroke: false,
+        color: '#000000',
+        fillOpacity: 0.5,
+        clickable: false,
+        interactive: false,
+
+        outerBounds: new L.LatLngBounds([-90, -180], [90, 180])
+    },
+
+    initialize: function (latLngs, options) {
+
+        var outerBoundsLatLngs = [
+            this.options.outerBounds.getSouthWest(),
+            this.options.outerBounds.getNorthWest(),
+            this.options.outerBounds.getNorthEast(),
+            this.options.outerBounds.getSouthEast()
+        ];
+        L.Polygon.prototype.initialize.call(this, [outerBoundsLatLngs, latLngs], options);
+    },
+
+});
+L.mask = function (latLngs, options) {
+    return new L.Mask(latLngs, options);
+};
+
+const customStyles = {
+    container: () => ({
+        position: 'absolute',
+        zIndex: 10000,
+        minWidth: '200px',
+        margin: '10px'
+    }),
+}
 export class Map extends React.Component {
 
     state = {
@@ -73,7 +113,14 @@ export class Map extends React.Component {
         layersControl: null,
         featureGroup: null,
         polygonLayer: null,
+        currentLocation: { label: 'Russia, Mytishi', value: MYTISHI_COORDS },
+        aviable_locations: [
+            { label: 'Russia, Mytishi', value: MYTISHI_COORDS },
+            { label: 'Russia, Kirov', value: [KIROV_COORDS] }
+        ],
+        mask: false
     }
+
 
     _mapNode = React.createRef()
     _osmb = React.createRef()
@@ -124,19 +171,19 @@ export class Map extends React.Component {
             this.setState(() => ({ polygonLayer }))
 
             // Check if polygon in aviable area
-            if (!this.aviableAreaBounds.intersects(
+            if (!this.state.aviableAreaBounds.intersects(
                 polygonLayer.getBounds()
             )) {
                 this.props.setUserMessage('No data found for selected area, please select polygon in the white rectangle area')
             } else {
-    
+
                 // fetch within data
                 try {
                     this.getData(polygonLayer.toGeoJSON())
                 } catch (error) {
                     console.log(error)
                 }
-    
+
                 // Zoom map to the target
                 map.flyTo(
                     polygonLayer.getCenter(),
@@ -147,20 +194,34 @@ export class Map extends React.Component {
         })
     }
 
-    setMapBounds = () => {
-        let leafletPolygon = L.geoJSON(AVIABLE_AREA, {
-            onEachFeature(feature, layer) {
-                L.Util.setOptions(layer, {
-                    interactive: true,
-                    fill: false,
-                    color: "#ffffff"
-                })
-            }
-        })
-        this.map.fitBounds(leafletPolygon.getBounds())
-        leafletPolygon.addTo(this.map)
-        this.aviableAreaBounds = leafletPolygon.getBounds()
-        // this.map.setMaxBounds(leafletPolygon.getBounds())
+    setMapBounds = (AVIABLE_AREA) => {
+        let leafletPolygon = L.polygon(
+            L.GeoJSON.coordsToLatLngs(
+                AVIABLE_AREA[0]
+            )
+        )
+        let aviableLatLngs = leafletPolygon.getLatLngs()
+        let aviableAreaBounds = leafletPolygon.getBounds()
+        this.setState(() => ({ aviableAreaBounds }))
+
+        this.map.fitBounds(aviableAreaBounds)
+        this.map.setMaxBounds(aviableAreaBounds.pad(0.1))
+        this.map.setMinZoom(11)
+        
+        // Hide all except aviable area
+        if(this.state.mask) {
+            this.state.mask.remove()
+        }
+        let mask = L.mask(aviableLatLngs).addTo(this.map)
+        this.setState(() => ({ mask }))
+
+        this.props.clearData()
+
+        // this.map.once('moveend', () => {
+        //     console.log(this.map.getZoom())
+        //     // this.map.setMaxBounds(this.map.getBounds());
+        //     // this.map.setMinZoom(this.map.getZoom())
+        // });
 
     }
 
@@ -199,7 +260,7 @@ export class Map extends React.Component {
         })
     }
 
-    init(id) {
+    init = (id) => {
         if (this.state.map) return
         // this function creates the Leaflet map object and is called after the Map component mounts
         let map = L.map(id, config.params)
@@ -213,6 +274,9 @@ export class Map extends React.Component {
         let layersControl = L.control.layers(config.baseLayers, undefined, { position: 'topright', collapsed: false }).addTo(map)
         let featureGroup = config.featureGroup
 
+        // add zoom control
+        L.control.zoom({ position: 'topright' }).addTo(map)
+
         // add DrawControl to the map
         map.addControl(config.drawControl)
 
@@ -224,42 +288,89 @@ export class Map extends React.Component {
 
         // set our state
         this.setState({ map, layersControl, featureGroup })
-        this.setMapBounds()
-        
+
+        this.setMapBounds(this.state.currentLocation.value)
+
+        // map.once('moveend', () => {
+        //     this.map.setMaxBounds(this.map.getBounds());
+        //     this.map.setMinZoom(this.map.getZoom())
+        // });
+
+
         this.setOSMB()
 
-        // setTimeout(() => {
-
-        //     this.props.loadAreaData([
+        // let area = [
+        //     [
         //         [
-        //             [
-        //                 37.74275779724121,
-        //                 55.91337932481009
-        //             ],
-        //             [
-        //                 37.769880294799805,
-        //                 55.91337932481009
-        //             ],
-        //             [
-        //                 37.769880294799805,
-        //                 55.92607655155125
-        //             ],
-        //             [
-        //                 37.74275779724121,
-        //                 55.92607655155125
-        //             ],
-        //             [
-        //                 37.74275779724121,
-        //                 55.91337932481009
-        //             ]
+        //             37.705421447753906,
+        //             55.891125103412406
+        //         ],
+        //         [
+        //             37.72305965423584,
+        //             55.891125103412406
+        //         ],
+        //         [
+        //             37.72305965423584,
+        //             55.89815159889918
+        //         ],
+        //         [
+        //             37.705421447753906,
+        //             55.89815159889918
+        //         ],
+        //         [
+        //             37.705421447753906,
+        //             55.891125103412406
         //         ]
-        //     ])
+        //     ]
+        // ]
+
+        let area = [[
+            [
+                37.74275779724121,
+                55.91337932481009
+            ],
+            [
+                37.769880294799805,
+                55.91337932481009
+            ],
+            [
+                37.769880294799805,
+                55.92607655155125
+            ],
+            [
+                37.74275779724121,
+                55.92607655155125
+            ],
+            [
+                37.74275779724121,
+                55.91337932481009
+            ]
+        ]]
+
+        // setTimeout(() => {
+        //     this.props.loadAreaData(area)
         // }, 500)
+
+        // L.mask(
+        //     L.GeoJSON.coordsToLatLngs(area[0])
+        // ).addTo(map)
+    }
+
+    onSelectChange = ({ value }) => {
+        this.setMapBounds(value)
     }
 
     render() {
         return (
-            <div ref={this._mapNode} id="map" />
+            <React.Fragment>
+                <Select
+                    onChange={this.onSelectChange}
+                    defaultValue={this.state.aviable_locations[0]}
+                    options={this.state.aviable_locations}
+                    styles={customStyles}
+                />
+                <div ref={this._mapNode} id="map" />
+            </React.Fragment>
         )
     }
 }
@@ -267,5 +378,5 @@ export class Map extends React.Component {
 const mapStateToProps = (state) => featuresSelector(state, state.filters)
 export default connect(
     mapStateToProps,
-    { loadAreaData, setUserMessage }
+    { loadAreaData, setUserMessage, clearData }
 )(Map)
