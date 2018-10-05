@@ -19,7 +19,7 @@ import setupLogRocketReact from 'logrocket-react'
 
 if (process.env.NODE_ENV === 'production') {
     LogRocket.init('hz29tl/uad_demo_prod')
-    setupLogRocketReact(LogRocket)
+    // setupLogRocketReact(LogRocket)
 }
 
 const mountNode = document.getElementById("app")

@@ -646,7 +646,7 @@ babel-messages@^6.23.0:
   dependencies:
     babel-runtime "^6.22.0"
 
-babel-plugin-add-react-displayname@0.0.5:
+babel-plugin-add-react-displayname@^0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/babel-plugin-add-react-displayname/-/babel-plugin-add-react-displayname-0.0.5.tgz#339d4cddb7b65fd62d1df9db9fe04de134122bd5"
 
@@ -4220,7 +4220,7 @@ loglevel@^1.4.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.1.tgz#e0fc95133b6ef276cdc8887cdaf24aa6f156f8fa"
 
-logrocket-react@^1.0.0:
+logrocket-react@1:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/logrocket-react/-/logrocket-react-1.0.0.tgz#088b7773bd85ca44a25a5471529849d9e3fdf50b"
   dependencies:
